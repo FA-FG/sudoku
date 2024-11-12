@@ -36,7 +36,7 @@ squareEls.forEach(function (element) {
   element.contentEditable = 'true'
 })
 
-function getNum(event) {
+const getNum = (event) => {
   let text = event.target.textContent
   if (!/^[0-9]$/.test(text)) {
     event.target.textContent = ''
@@ -60,6 +60,6 @@ function getNum(event) {
 squareEls.forEach((square) => {
   square.addEventListener('input', getNum)
 })
-squareEls.forEach((square) => {
-  square.addEventListener('click', handleClick)
-})
+// squareEls.forEach((square) => {
+//   square.addEventListener('click', handleClick)
+// })
