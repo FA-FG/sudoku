@@ -49,23 +49,11 @@ function getNum(event) {
     return text
   }
 }
-// if (/^\d$/.test(test) && num >= 1 && num <= 9) {
 
-const handleClick = (event) => {
-  const index = event.target.id
-  console.log(index)
-
-  // const eve = (event2) => {
-  //   let x = event2.key // Access the key pressed
-  //   // console.log(x)
-}
-
-// event.target.addEventListener('keypress', eve)
+// const handleClick = (event) => {
+//   const index = event.target.id
+//   console.log(index)
 // }
-
-// document.getElementById('0').addEventListener('keydown', function (event) {
-//   console.log(event.key)
-// })
 
 /*----------------------------- Event Listeners -----------------------------*/
 
@@ -75,7 +63,3 @@ squareEls.forEach((square) => {
 squareEls.forEach((square) => {
   square.addEventListener('click', handleClick)
 })
-
-// addEventListener('keypress')
-
-// resetBtnEl.addEventListener('click', init)
