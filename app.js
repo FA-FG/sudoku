@@ -3,9 +3,16 @@
 
 /*---------------------------- Variables (state) ----------------------------*/
 const puzzles = [
+  // {
+  //   puzzle:
+  //     '46710080591283560708564719229635147070892035153140892607306451062451978315978364',
+  //   solution:
+  //     '467192835912835647385647192296351478748926351531478926873264519624519783159783264',
+  //   difficulty: 'easy'
+  // },
   {
     puzzle:
-      '467100805912835607085647192296351470708920351531408926073064510624519783159783064',
+      '467100835912835647385647192296351478748926351531478926873264519624519783159783264',
     solution:
       '467192835912835647385647192296351478748926351531478926873264519624519783159783264',
     difficulty: 'easy'
@@ -416,53 +423,62 @@ let winner = false
 
 const squareEls = document.querySelectorAll('.sqr')
 const msg = document.querySelector('#msg')
+const start = document.querySelector('#start')
+const winMsg = document.querySelector('#win')
+const hintButon = document.querySelector('#hint')
 
 /*-------------------------------- Functions --------------------------------*/
 squareEls.forEach(function (element) {
   element.contentEditable = 'true'
 })
 
-const getNum = (event) => {
-  let text = event.target.textContent
-  if (!/^[1-9]$/.test(text)) {
-    event.target.textContent = ''
-  } else {
-    let index = event.target.id
-    combinedBoard[index] = text
-    // console.log(combinedBoard)
-    return text
-  }
+const selectRandomPuzzle = () => {
+  // const random = Math.floor(Math.random() * puzzles.length)
+  const random = 0
+  let choice = puzzles[random].puzzle
+  let splitChoice = choice.split('')
+  let ans = puzzles[random].solution
+  let ansSplit = ans.split('')
+  let massege = puzzles[random].difficulty.toLocaleUpperCase()
+  let randomArray = [splitChoice, ansSplit, massege]
+  return randomArray
 }
 
-const selectRandomPuzzle = () => {
-  const random = Math.floor(Math.random() * puzzles.length)
-  let choice = puzzles[random].puzzle
-  let massege = puzzles[random].difficulty.toLocaleUpperCase()
-  msg.textContent = `Difficalty:  ${massege}`
+let randomArray = selectRandomPuzzle()
 
-  let splitChoice = choice.split('')
-  console.log(splitChoice)
+// const randomArray = selectRandomPuzzle()
+// console.log(randomArray)
 
-  const x = combinedBoard.forEach((element, index) => {
-    combinedBoard[index] = parseInt(splitChoice[index])
-    if (parseInt(splitChoice[index]) === 0) {
-      combinedBoard[index] = null
-    }
-  })
+const render = () => {
+  // const randomArray = selectRandomPuzzle()
+  if (winner) return
+  addRandomToCombined(randomArray)
   displayPuzzle()
   disableEdit()
-
-  console.log(combinedBoard)
+  dislayDifficalty(randomArray)
+  // compareAnswers(randomArray)
+  winner = false
 }
 
-// const compareAnswers = (ele,inx) => {
-//   combinedBoard.every
-// }
+const addRandomToCombined = (randomArray) => {
+  const x = combinedBoard.forEach((element, index) => {
+    combinedBoard[index] = parseInt(randomArray[0][index])
+    if (parseInt(randomArray[0][index]) === 0) {
+      combinedBoard[index] = ''
+    }
+  })
+}
+
+const dislayDifficalty = (puzzleDiff) => {
+  let massege = puzzleDiff[2]
+  msg.textContent = `Difficalty:  ${massege}`
+}
 
 const disableEdit = () => {
   combinedBoard.forEach((ele, idx) => {
     if (combinedBoard[idx]) {
       squareEls[idx].contentEditable = false
+      squareEls[idx].style.color = '#333333'
     }
   })
 }
@@ -473,18 +489,66 @@ const displayPuzzle = () => {
   })
 }
 
-selectRandomPuzzle()
-
-// const handleClick = (event) => {
-//   const index = event.target.id
-//   console.log(index)
+const compareAnswers = (answers) => {
+  if (combinedBoard.every((val, idx) => val == answers[1][idx])) {
+    winner = true
+    winMsg.textContent = 'You solved the puzzle!'
+    combinedBoard.forEach((ele, idx) => {
+      squareEls[idx].contentEditable = false
+      console.log('true')
+    })
+  }
+  // console.log(`ans ${answers[1]}`)
+  // console.log(`board ${combinedBoard}`)
+}
+let hintActive = false
+// const togglebutton = () => {
+//   if (hintActive) {
+//     hintButon.style.background.color = 'green'
+//   }
 // }
+const hint = () => {
+  if (hintActive) {
+    squareEls.forEach((square) => {
+      square.style.color = 'black'
+    })
+  } else {
+    combinedBoard.forEach((ele, idx) => {
+      if (combinedBoard[idx] != randomArray[1][idx]) {
+        squareEls[idx].style.color = 'red'
+      } else {
+        squareEls[idx].style.color = 'black'
+      }
+    })
+  }
+  hintActive = !hintActive
+}
+
+const getNum = (event) => {
+  let text = event.target.textContent
+  if (!/^[1-9]$/.test(text)) {
+    event.target.textContent = ''
+  } else {
+    let index = event.target.id
+    combinedBoard[index] = parseInt(text)
+  }
+  // console.log(combinedBoard)
+  // console.log(randomArray[1])
+
+  compareAnswers(randomArray)
+}
+
+const handleClick = (event) => {
+  const index = event.target.id
+  console.log(index)
+}
 
 /*----------------------------- Event Listeners -----------------------------*/
 
 squareEls.forEach((square) => {
   square.addEventListener('input', getNum)
 })
-// squareEls.forEach((square) => {
-//   square.addEventListener('click', handleClick)
-// })
+
+start.addEventListener('click', render)
+
+hintButon.addEventListener('click', hint)

@@ -40,5 +40,10 @@ body {
 }
 
 button {
-  margin: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 2px solid #ccc;
+  background-color: #f0f0f0;
+  border-radius: 5px;
 }
