@@ -1,6 +1,3 @@
-/*-------------------------------- Constants --------------------------------*/
-// const winningCombos = []
-
 /*---------------------------- Variables (state) ----------------------------*/
 const puzzles = [
   // {
@@ -426,11 +423,10 @@ const msg = document.querySelector('#msg')
 const start = document.querySelector('#start')
 const winMsg = document.querySelector('#win')
 const hintButon = document.querySelector('#hint')
+const noteButton = document.querySelector('#note-btn')
+const startButton = document.querySelector('#start')
 
 /*-------------------------------- Functions --------------------------------*/
-squareEls.forEach(function (element) {
-  element.contentEditable = 'true'
-})
 
 const selectRandomPuzzle = () => {
   // const random = Math.floor(Math.random() * puzzles.length)
@@ -456,6 +452,7 @@ const render = () => {
   displayPuzzle()
   disableEdit()
   dislayDifficalty(randomArray)
+
   // compareAnswers(randomArray)
   winner = false
 }
@@ -478,7 +475,9 @@ const disableEdit = () => {
   combinedBoard.forEach((ele, idx) => {
     if (combinedBoard[idx]) {
       squareEls[idx].contentEditable = false
-      squareEls[idx].style.color = '#333333'
+      squareEls[idx].style.color = '#444444'
+    } else {
+      squareEls[idx].contentEditable = true
     }
   })
 }
@@ -487,6 +486,10 @@ const displayPuzzle = () => {
   combinedBoard.forEach((element, index) => {
     squareEls[index].textContent = element
   })
+  // hintButon.style.visibility = 'visible'
+  hintButon.style.display = 'inline'
+  noteButton.style.display = 'inline'
+  startButton.style.display = 'none'
 }
 
 const compareAnswers = (answers) => {
@@ -497,31 +500,41 @@ const compareAnswers = (answers) => {
       squareEls[idx].contentEditable = false
       console.log('true')
     })
+    hintButon.disabled = true
+    noteButton.disabled = true
   }
-  // console.log(`ans ${answers[1]}`)
-  // console.log(`board ${combinedBoard}`)
 }
 let hintActive = false
-// const togglebutton = () => {
-//   if (hintActive) {
-//     hintButon.style.background.color = 'green'
-//   }
-// }
+
+const togglebutton = () => {
+  if (hintActive) {
+    hintButon.style.backgroundColor = 'green'
+  } else {
+    hintButon.style.backgroundColor = 'red'
+  }
+}
 const hint = () => {
   if (hintActive) {
-    squareEls.forEach((square) => {
-      square.style.color = 'black'
+    squareEls.forEach((square, idx) => {
+      if (square.style.color === 'red' || square.style.color === 'green') {
+        square.style.color = 'black'
+      }
     })
   } else {
     combinedBoard.forEach((ele, idx) => {
       if (combinedBoard[idx] != randomArray[1][idx]) {
         squareEls[idx].style.color = 'red'
       } else {
-        squareEls[idx].style.color = 'black'
+        const color = window.getComputedStyle(squareEls[idx]).color
+        if (color === 'rgb(0, 0, 0)') {
+          // Check for black in RGB format
+          squareEls[idx].style.color = 'green' // Change the color to green
+        }
       }
     })
   }
   hintActive = !hintActive
+  togglebutton()
 }
 
 const getNum = (event) => {
@@ -532,16 +545,16 @@ const getNum = (event) => {
     let index = event.target.id
     combinedBoard[index] = parseInt(text)
   }
-  // console.log(combinedBoard)
-  // console.log(randomArray[1])
 
   compareAnswers(randomArray)
+  if (hintActive) hint()
 }
 
-const handleClick = (event) => {
-  const index = event.target.id
-  console.log(index)
-}
+// const addNote = () => {
+
+// }
+
+// noteButton.addEventListener('click', addNote)
 
 /*----------------------------- Event Listeners -----------------------------*/
 
