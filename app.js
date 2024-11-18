@@ -412,25 +412,39 @@ let board = [
   ['', '', '', '', '', '', '', '', ''],
   ['', '', '', '', '', '', '', '', '']
 ]
-let combinedBoard = board.flat()
+let boardArray = board.flat()
 
 let winner = false
+let hintActive = false
+let noteActive = false
 
 /*------------------------ Cached Element References ------------------------*/
-
+// ELEMENT SELECTORS
 const squareEls = document.querySelectorAll('.sqr')
+const textElements = document.querySelectorAll('.text')
+const noteElements = document.querySelectorAll('.note')
+// MESSAGES
 const msg = document.querySelector('#msg')
-const start = document.querySelector('#start')
 const winMsg = document.querySelector('#win')
-const hintButon = document.querySelector('#hint')
+// BUTTONS
+const hintButton = document.querySelector('#hint-btn')
 const noteButton = document.querySelector('#note-btn')
-const startButton = document.querySelector('#start')
+const startButton = document.querySelector('#start-btn')
+const restButton = document.querySelector('#reset-btn')
 
 /*-------------------------------- Functions --------------------------------*/
 
+// TO DISABLE ALL BOXES BEFORE THE GAME STARTS
+textElements.forEach((input) => {
+  input.readOnly = true
+})
+
+// CHOOSE A RANDOM PUZZLE FROM THE PUZZLE ARRAY - RETURN AN ARRAY OF CHOICE-
 const selectRandomPuzzle = () => {
   // const random = Math.floor(Math.random() * puzzles.length)
+  // TESTING ONLY
   const random = 0
+  // SPLITING BECAUSE ITS A LONG TEXT OF NUMBERS
   let choice = puzzles[random].puzzle
   let splitChoice = choice.split('')
   let ans = puzzles[random].solution
@@ -440,128 +454,210 @@ const selectRandomPuzzle = () => {
   return randomArray
 }
 
+// GET THE CHOSEN PUZZLE RETURNED FROM THE FUNCTION
 let randomArray = selectRandomPuzzle()
 
-// const randomArray = selectRandomPuzzle()
-// console.log(randomArray)
-
+// A RENDER FUNCTIN THAT WILL START THE GAME
 const render = () => {
-  // const randomArray = selectRandomPuzzle()
   if (winner) return
-  addRandomToCombined(randomArray)
+  addRandomToBoardArray(randomArray)
   displayPuzzle()
   disableEdit()
   dislayDifficalty(randomArray)
-
-  // compareAnswers(randomArray)
   winner = false
 }
 
-const addRandomToCombined = (randomArray) => {
-  const x = combinedBoard.forEach((element, index) => {
-    combinedBoard[index] = parseInt(randomArray[0][index])
+// GET THE RANDOM PUZZLE CHOOSEN AND APPEND IT TO THE BOARD ARRAY
+const addRandomToBoardArray = (randomArray) => {
+  boardArray.forEach((element, index) => {
+    boardArray[index] = parseInt(randomArray[0][index])
     if (parseInt(randomArray[0][index]) === 0) {
-      combinedBoard[index] = ''
+      boardArray[index] = ''
     }
   })
 }
 
+// DISPLAY THE PUZZLE DIFFICALTY
 const dislayDifficalty = (puzzleDiff) => {
   let massege = puzzleDiff[2]
   msg.textContent = `Difficalty:  ${massege}`
 }
 
+// TO DISABLE THE EDIT OF PUZZLE BOXES AND ENABLING THE EDIT OF THE REST BOXES
 const disableEdit = () => {
-  combinedBoard.forEach((ele, idx) => {
-    if (combinedBoard[idx]) {
-      squareEls[idx].contentEditable = false
-      squareEls[idx].style.color = '#444444'
+  boardArray.forEach((ele, idx) => {
+    if (boardArray[idx]) {
+      textElements[idx].readOnly = true // PREVENT EDITING
     } else {
-      squareEls[idx].contentEditable = true
+      textElements[idx].readOnly = false //ENABLE EDITING
     }
   })
 }
 
+// DISPLAY THE PUZLLE BY GETTING THE NUMBERS FROM THE BOARD ARRAY
 const displayPuzzle = () => {
-  combinedBoard.forEach((element, index) => {
-    squareEls[index].textContent = element
+  boardArray.forEach((element, index) => {
+    if (squareEls[index]) {
+      if (textElements[index]) {
+        textElements[index].value = element
+      }
+      if (element === '') {
+        textElements[index].style.color = 'black' // SET THE COLOR OF THE USER INPUT NUMBERS
+      } else {
+        textElements[index].style.color = '#444444' // SET THE COLOR OF THE PUZZLE NUMBERS
+      }
+    }
   })
-  // hintButon.style.visibility = 'visible'
-  hintButon.style.display = 'inline'
+  // HIDE AND DISPLAY BUTTONS
+  hintButton.style.display = 'inline'
   noteButton.style.display = 'inline'
   startButton.style.display = 'none'
 }
 
+// WILL GET THE BOARDARRAY AND COMPARE IT WITH PUZZLE ANSWERS ARRAY
 const compareAnswers = (answers) => {
-  if (combinedBoard.every((val, idx) => val == answers[1][idx])) {
+  if (boardArray.every((val, idx) => val == answers[1][idx])) {
     winner = true
     winMsg.textContent = 'You solved the puzzle!'
-    combinedBoard.forEach((ele, idx) => {
+    boardArray.forEach((ele, idx) => {
       squareEls[idx].contentEditable = false
-      console.log('true')
     })
-    hintButon.disabled = true
-    noteButton.disabled = true
+    hintButton.style.display = 'none'
+    noteButton.style.display = 'none'
+    restButton.style.display = 'inline'
   }
 }
-let hintActive = false
 
-const togglebutton = () => {
-  if (hintActive) {
-    hintButon.style.backgroundColor = 'green'
+const togglebutton = (active, button) => {
+  // Toggle the hint button color between red and green based on hintActive state
+  if (active) {
+    button.style.backgroundColor = 'green' // Hint is active, green button
   } else {
-    hintButon.style.backgroundColor = 'red'
+    button.style.backgroundColor = 'red' // Hint is inactive, red button
   }
 }
+
+// COMPARE THE ANSWERS AND TOGGLE COLORS
 const hint = () => {
   if (hintActive) {
     squareEls.forEach((square, idx) => {
-      if (square.style.color === 'red' || square.style.color === 'green') {
-        square.style.color = 'black'
+      if (
+        textElements[idx].style.color === 'red' ||
+        textElements[idx].style.color === 'green'
+      ) {
+        textElements[idx].style.color = 'black'
       }
     })
   } else {
-    combinedBoard.forEach((ele, idx) => {
-      if (combinedBoard[idx] != randomArray[1][idx]) {
-        squareEls[idx].style.color = 'red'
+    boardArray.forEach((ele, idx) => {
+      if (!boardArray[idx]) {
+        textElements[idx].style.color = 'black'
+      } else if (boardArray[idx] != randomArray[1][idx]) {
+        textElements[idx].style.color = 'red' // Mark incorrect answers in red
       } else {
-        const color = window.getComputedStyle(squareEls[idx]).color
-        if (color === 'rgb(0, 0, 0)') {
-          // Check for black in RGB format
-          squareEls[idx].style.color = 'green' // Change the color to green
+        // Mark correct answers in green
+        if (textElements[idx].style.color === 'black') {
+          textElements[idx].style.color = 'green'
         }
       }
     })
   }
+
   hintActive = !hintActive
-  togglebutton()
+  togglebutton(hintActive, hintButton)
 }
 
+// GET THE USER INPUT AND APPEND IT TO THE BOARD ARRAY
 const getNum = (event) => {
-  let text = event.target.textContent
-  if (!/^[1-9]$/.test(text)) {
-    event.target.textContent = ''
-  } else {
-    let index = event.target.id
-    combinedBoard[index] = parseInt(text)
-  }
+  let text = event.target.value.trim() // Get the input value
+  let index = event.target.closest('.sqr').id
 
+  // Check if the input is only one valid digit (1-9)
+  //  ^start, $ends, [1-9]match
+  if (text.length === 1 && /^[1-9]$/.test(text)) {
+    event.target.style.color = 'black'
+    boardArray[index] = parseInt(text)
+  } else {
+    event.target.value = ''
+  }
+  // TO CHECK IF WINNER
   compareAnswers(randomArray)
-  if (hintActive) hint()
 }
 
-// const addNote = () => {
+// SHOW AND HIDE THE NOTE BOX
+const showNoteBox = () => {
+  noteActive = !noteActive
+  boardArray.forEach((ele, idx) => {
+    // ADDING NOTE TO JUST THE ANSWERS BOXES
+    if (textElements[idx].style.color !== 'rgb(68, 68, 68)') {
+      if (noteActive) {
+        // If noteActive is true, show the note box
+        noteElements[idx].style.display = 'block'
+        noteElements[idx].contentEditable = true // Allow editing
 
-// }
+        // Listen for input events on the note box to make sure its only on digit
+        noteElements[idx].addEventListener('input', (event) => {
+          const text = event.target.textContent.trim()
 
-// noteButton.addEventListener('click', addNote)
+          if (text.length === 1 && /^[1-9]$/.test(text)) {
+          } else {
+            // Invalid input, clear the note box
+            noteElements[idx].textContent = ''
+          }
+        })
+      } else {
+        // When noteActive is false, hide the note box
+        noteElements[idx].style.display = 'none'
+      }
+    }
+  })
+  togglebutton(noteActive, noteButton)
+}
+
+// RESET THE GAME FOR PLAY AGAIN
+const resetGame = () => {
+  boardArray = new Array(81).fill('')
+
+  // CLEAR BOARD TEXT VALUES OF THE BOXES
+  textElements.forEach((input) => {
+    input.value = ''
+  })
+
+  // CLEAR NOTES
+  noteElements.forEach((note) => {
+    note.style.display = 'none' // Hide note boxes
+    note.contentEditable = false // Make them non-editable initially
+  })
+
+  // RESET DIFFICULTY
+  msg.textContent = 'Difficulty:'
+
+  // RESET WINNER
+  winner = false
+  winMsg.textContent = '' // Clear any winning message
+
+  startButton.style.display = 'inline'
+
+  // GET ANOTHER PUZZLE
+  randomArray = selectRandomPuzzle()
+  render()
+
+  // RESET BUTTONS
+  hintButton.style.display = 'inline'
+  noteButton.style.display = 'inline'
+  restButton.style.display = 'none'
+}
 
 /*----------------------------- Event Listeners -----------------------------*/
 
-squareEls.forEach((square) => {
-  square.addEventListener('input', getNum)
+textElements.forEach((input) => {
+  input.addEventListener('input', getNum)
 })
 
-start.addEventListener('click', render)
+startButton.addEventListener('click', render)
 
-hintButon.addEventListener('click', hint)
+hintButton.addEventListener('click', hint)
+
+noteButton.addEventListener('click', showNoteBox)
+
+restButton.addEventListener('click', resetGame)
