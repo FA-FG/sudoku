@@ -864,7 +864,10 @@ document.body.addEventListener('mouseover', (event) => {
 })
 
 // Attach click event listeners to buttons in index page
-if (window.location.pathname === '/unit1/hw/sudoku/') {
+if (
+  window.location.pathname === '/' ||
+  window.location.pathname.includes('/index.html')
+) {
   document
     .getElementById('easy')
     .addEventListener('click', () => handleDifficultyClick('easy'))
@@ -875,7 +878,6 @@ if (window.location.pathname === '/unit1/hw/sudoku/') {
     .getElementById('hard')
     .addEventListener('click', () => handleDifficultyClick('hard'))
 }
-// })
 
 // Attach click event listeners to buttons in game page
 if (window.location.pathname.includes('game-page.html')) {
