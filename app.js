@@ -712,8 +712,7 @@ document.body.addEventListener('mouseover', (event) => {
 // Attach click event listeners to buttons in index page
 if (
   window.location.pathname === '/' ||
-  window.location.pathname.includes('/index.html') ||
-  window.location.pathname.includes('/sudoku/')
+  window.location.pathname.includes('/index.html')
 ) {
   document
     .getElementById('easy')
