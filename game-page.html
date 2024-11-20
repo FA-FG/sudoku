@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Faculty+Glyphic&family=Fjalla+One&family=Playwrite+DE+Grund:wght@100..400&family=Poiret+One&family=Poller+One&family=Shadows+Into+Light&display=swap');
+    </style>
+    <script defer src="app.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Sudoku</title>
+  </head>
+  <body>
+    <h1 id="youdid">You can do it</h1>
+    <h2 id="msg"></h2>
+
+    <board id="board">
+      <section class="subsec">
+        <div class="sqr" id="0">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="1">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="2">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="3">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="4">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="5">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="6">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="7">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="8">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+      </section>
+
+      <section class="subsec">
+        <div class="sqr" id="9">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="10">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="11">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="12">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="13">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="14">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="15">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="16">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="17">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+      </section>
+
+      <section class="subsec">
+        <div class="sqr" id="18">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="19">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="20">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="21">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="22">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="23">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="24">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="25">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="26">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+      </section>
+
+      <section class="subsec">
+        <div class="sqr" id="27">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="28">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="29">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="30">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="31">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="32">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="33">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="34">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="35">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+      </section>
+
+      <section class="subsec">
+        <div class="sqr" id="36">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="37">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="38">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="39">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="40">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="41">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="42">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="43">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="44">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+      </section>
+
+      <section class="subsec">
+        <div class="sqr" id="45">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="46">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="47">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="48">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="49">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="50">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="51">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="52">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="53">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+      </section>
+
+      <section class="subsec">
+        <div class="sqr" id="54">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="55">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="56">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="57">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="58">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="59">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="60">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="61">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="62">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+      </section>
+
+      <section class="subsec">
+        <div class="sqr" id="63">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="64">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="65">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="66">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="67">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="68">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="69">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="70">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="71">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+      </section>
+
+      <section class="subsec">
+        <div class="sqr" id="72">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="73">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="74">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="75">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="76">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr line" id="77">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="78">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="79">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+        <div class="sqr" id="80">
+          <div class="note"></div>
+          <input type="text" pattern="[1-9]" maxlength="1" class="text" />
+        </div>
+      </section>
+    </board>
+    <p></p>
+    <div id="out">
+      <div id="win-div"><p id="win">You solved the puzzle!</p></div>
+    </div>
+    <button id="start-btn">click to start</button>
+    <button id="hint-btn">Hint</button>
+    <button id="note-btn">Note</button>
+    <button id="reset-btn">Play Again</button>
+
+    <img
+      id="left"
+      src="https://www.icegif.com/wp-content/uploads/2023/07/icegif-137.gif"
+      alt="A cat celebrating"
+    />
+    <img
+      id="right"
+      src="https://www.icegif.com/wp-content/uploads/2023/07/icegif-137.gif"
+      alt="A cat celebrating"
+    />
+    <audio id="win-sound" src="win.mp3" type="audio/mp3">
+      Your browser does not support the audio element.
+    </audio>
+  </body>
+</html>

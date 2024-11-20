@@ -1,19 +1,13 @@
 /*---------------------------- Variables (state) ----------------------------*/
 const puzzles = [
-  // {
-  //   puzzle:
-  //     '46710080591283560708564719229635147070892035153140892607306451062451978315978364',
-  //   solution:
-  //     '467192835912835647385647192296351478748926351531478926873264519624519783159783264',
-  //   difficulty: 'easy'
-  // },
   {
     puzzle:
-      '467100835912835647385647192296351478748926351531478926873264519624519783159783264',
+      '46710080591283560708564719229635147070892035153140892607306451062451978315978364',
     solution:
       '467192835912835647385647192296351478748926351531478926873264519624519783159783264',
     difficulty: 'easy'
   },
+
   {
     puzzle:
       '006513000001904036302060010063000000480070390009030065000007050000640000657001920',
@@ -401,6 +395,51 @@ const puzzles = [
   }
 ]
 
+const testPuzzle = [
+  {
+    puzzle:
+      '460092835912835647385647192296351478748926351531478926873264519624519783159783264',
+    solution:
+      '467192835912835647385647192296351478748926351531478926873264519624519783159783264',
+    difficulty: 'easy'
+  },
+  {
+    puzzle:
+      '007192835912835647385647192296351478748926351531478926873264519624519783159783264',
+    solution:
+      '467192835912835647385647192296351478748926351531478926873264519624519783159783264',
+    difficulty: 'easy'
+  },
+  {
+    puzzle:
+      '467100835912835647385647192296351478748926351531478926873264519624519783159783264',
+    solution:
+      '467192835912835647385647192296351478748926351531478926873264519624519783159783264',
+    difficulty: 'hard'
+  },
+  {
+    puzzle:
+      '467192835912835600385647192296351478748926351531478926873264519624519783159783264',
+    solution:
+      '467192835912835647385647192296351478748926351531478926873264519624519783159783264',
+    difficulty: 'medium'
+  },
+  {
+    puzzle:
+      '467192835912835640085647192296351478748926351531478926873264519624519783159783264',
+    solution:
+      '467192835912835647385647192296351478748926351531478926873264519624519783159783264',
+    difficulty: 'medium'
+  },
+  {
+    puzzle:
+      '467192835912835647385007192296351478748926351531478926873264519624519783159783264',
+    solution:
+      '467192835912835647385647192296351478748926351531478926873264519624519783159783264',
+    difficulty: 'easy'
+  }
+]
+
 let board = [
   ['', '', '', '', '', '', '', '', ''],
   ['', '', '', '', '', '', '', '', ''],
@@ -423,6 +462,7 @@ let noteActive = false
 const squareEls = document.querySelectorAll('.sqr')
 const textElements = document.querySelectorAll('.text')
 const noteElements = document.querySelectorAll('.note')
+const secElement = document.querySelectorAll('.subsec')
 // MESSAGES
 const msg = document.querySelector('#msg')
 const winMsg = document.querySelector('#win')
@@ -431,6 +471,7 @@ const hintButton = document.querySelector('#hint-btn')
 const noteButton = document.querySelector('#note-btn')
 const startButton = document.querySelector('#start-btn')
 const restButton = document.querySelector('#reset-btn')
+const nextLink = document.querySelector('#next-link')
 
 /*-------------------------------- Functions --------------------------------*/
 
@@ -439,19 +480,78 @@ textElements.forEach((input) => {
   input.readOnly = true
 })
 
+// CHECK THE URL WHEN GAME PAGE IS LOADED AND SAVE IT IN A VAR
+let selectedDifficulty = ''
+
+const urlParams = new URLSearchParams(window.location.search)
+const difficultyFromUrl = urlParams.get('difficulty')
+if (difficultyFromUrl) {
+  selectedDifficulty = difficultyFromUrl
+}
+
+// TO GET SELECTED DIFFICULTY BUTTONS
+function handleDifficultyClick(difficulty) {
+  selectedDifficulty = difficulty // Save the difficulty level
+
+  // RESET SELECTED CLASS FOR ALL BUTTONS
+  const buttons = document.querySelectorAll('.dif')
+  buttons.forEach((button) => {
+    button.classList.remove('selected')
+  })
+
+  // ADD SELECTED CLASS FOR SELECTED BUTTON
+  const selectedButton = document.getElementById(`${difficulty}`)
+  selectedButton.classList.add('selected')
+
+  // Show the next link that leads to the game page
+  nextLink.style.display = 'inline-block'
+
+  // Update the link's href attribute
+  nextLink.href = `game-page.html?difficulty=${selectedDifficulty}`
+}
+
+// // Testing puzzle: GITTING A FILTERED ARRAY WITH ONLY SELECTED DIFFICALTY PUZZLE
+// const getFilteredPuzzles = (difficulty) => {
+//   return testPuzzle.filter((puzzle) => puzzle.difficulty === difficulty)
+// }
+
+// // TESTING ONLY
+// const selectRandomPuzzle = () => {
+//   if (selectedDifficulty) {
+//     // FILTER THE PUZZLE AACCORDING TO DIFFICULTY
+//     const filteredPuzzles = getFilteredPuzzles(selectedDifficulty)
+//     const random = Math.floor(Math.random() * filteredPuzzles.length)
+//     // SPLITING BECAUSE ITS A LONG TEXT OF NUMBERS
+//     let choice = filteredPuzzles[random].puzzle
+//     let splitChoice = choice.split('')
+//     let ans = filteredPuzzles[random].solution
+//     let ansSplit = ans.split('')
+//     let massege = filteredPuzzles[random].difficulty.toLocaleUpperCase()
+//     let randomArray = [splitChoice, ansSplit, massege]
+//     return randomArray
+//   }
+// }
+
+// Actual puzzle: GITTING A FILTERED ARRAY WITH ONLY SELECTED DIFFICALTY PUZZLE
+const getFilteredPuzzles = (difficulty) => {
+  return puzzles.filter((puzzle) => puzzle.difficulty === difficulty)
+}
+
+// ACTUAL PUZZLE
 // CHOOSE A RANDOM PUZZLE FROM THE PUZZLE ARRAY - RETURN AN ARRAY OF CHOICE-
 const selectRandomPuzzle = () => {
-  // const random = Math.floor(Math.random() * puzzles.length)
-  // TESTING ONLY
-  const random = 0
-  // SPLITING BECAUSE ITS A LONG TEXT OF NUMBERS
-  let choice = puzzles[random].puzzle
-  let splitChoice = choice.split('')
-  let ans = puzzles[random].solution
-  let ansSplit = ans.split('')
-  let massege = puzzles[random].difficulty.toLocaleUpperCase()
-  let randomArray = [splitChoice, ansSplit, massege]
-  return randomArray
+  if (selectedDifficulty) {
+    const filteredPuzzles = getFilteredPuzzles(selectedDifficulty)
+    const random = Math.floor(Math.random() * filteredPuzzles.length)
+    // SPLITING BECAUSE ITS A LONG TEXT OF NUMBERS
+    let choice = filteredPuzzles[random].puzzle
+    let splitChoice = choice.split('')
+    let ans = filteredPuzzles[random].solution
+    let ansSplit = ans.split('')
+    let massege = filteredPuzzles[random].difficulty.toLocaleUpperCase()
+    let randomArray = [splitChoice, ansSplit, massege]
+    return randomArray
+  }
 }
 
 // GET THE CHOSEN PUZZLE RETURNED FROM THE FUNCTION
@@ -459,12 +559,18 @@ let randomArray = selectRandomPuzzle()
 
 // A RENDER FUNCTIN THAT WILL START THE GAME
 const render = () => {
-  if (winner) return
   addRandomToBoardArray(randomArray)
   displayPuzzle()
   disableEdit()
   dislayDifficalty(randomArray)
   winner = false
+  hintActive = false
+  noteActive = false
+  // ADD EVENT LESTENER ON ALL INPUT BOXES FOR HIGHTLIGH
+  if (winner) return
+  textElements.forEach((square) => {
+    square.addEventListener('mouseover', highlight)
+  })
 }
 
 // GET THE RANDOM PUZZLE CHOOSEN AND APPEND IT TO THE BOARD ARRAY
@@ -487,8 +593,10 @@ const dislayDifficalty = (puzzleDiff) => {
 const disableEdit = () => {
   boardArray.forEach((ele, idx) => {
     if (boardArray[idx]) {
+      textElements[idx].classList.add('puzzle-num')
       textElements[idx].readOnly = true // PREVENT EDITING
     } else {
+      textElements[idx].classList.add('game-num')
       textElements[idx].readOnly = false //ENABLE EDITING
     }
   })
@@ -519,21 +627,37 @@ const compareAnswers = (answers) => {
   if (boardArray.every((val, idx) => val == answers[1][idx])) {
     winner = true
     winMsg.textContent = 'You solved the puzzle!'
+
+    document.querySelector('#board').classList.add('fade-out')
+    document.querySelector('#win-div').classList.add('visible')
+    document.querySelector('#out').classList.add('visible')
+
     boardArray.forEach((ele, idx) => {
       squareEls[idx].contentEditable = false
     })
+    // HIDE AND SHOW BUTTONS
     hintButton.style.display = 'none'
     noteButton.style.display = 'none'
     restButton.style.display = 'inline'
+    // SHOW IMAGES AND PLAY SOUND
+    document.querySelector('#left').style.visibility = 'visible'
+    document.querySelector('#right').style.visibility = 'visible'
+    document.getElementById('youdid').textContent = 'You did it!'
+    document.getElementById('win-sound').play()
+
+    // DISABLE INPUT LISTNER
+    textElements.forEach((square, idx) => {
+      square.removeEventListener('mouseover', highlight)
+    })
   }
 }
 
+// TOGGLE BUTTON BETWEEN GREEN AND RED
 const togglebutton = (active, button) => {
-  // Toggle the hint button color between red and green based on hintActive state
   if (active) {
-    button.style.backgroundColor = 'green' // Hint is active, green button
+    button.style.backgroundColor = 'rgb(22, 160, 133)' // Green
   } else {
-    button.style.backgroundColor = 'red' // Hint is inactive, red button
+    button.style.backgroundColor = 'rgb(231, 76, 60)' // Red
   }
 }
 
@@ -542,27 +666,39 @@ const hint = () => {
   if (hintActive) {
     squareEls.forEach((square, idx) => {
       if (
-        textElements[idx].style.color === 'red' ||
-        textElements[idx].style.color === 'green'
+        textElements[idx].style.color === 'rgb(231, 76, 60)' ||
+        textElements[idx].style.color === 'rgb(46, 204, 113)'
       ) {
+        // REMOVE ALL CLASSES TO RETURN TO NORMAL GAME STYLE
         textElements[idx].style.color = 'black'
+        boardArray.forEach((ele, idx) => {
+          squareEls[idx].classList.remove('incorrect')
+          squareEls[idx].classList.remove('correct')
+        })
       }
     })
   } else {
     boardArray.forEach((ele, idx) => {
       if (!boardArray[idx]) {
         textElements[idx].style.color = 'black'
+        // Mark incorrect answers in red
       } else if (boardArray[idx] != randomArray[1][idx]) {
-        textElements[idx].style.color = 'red' // Mark incorrect answers in red
+        textElements[idx].style.color = 'rgb(231, 76, 60)'
+        // ADD AND REMOVE CLASS FOR PROPER ANIMATION
+        squareEls[idx].classList.add('incorrect')
+        squareEls[idx].classList.remove('correct')
       } else {
         // Mark correct answers in green
         if (textElements[idx].style.color === 'black') {
-          textElements[idx].style.color = 'green'
+          textElements[idx].style.color = 'rgb(46, 204, 113)'
+          // ADD AND REMOVE CLASS FOR PROPER ANIMATION
+          squareEls[idx].classList.add('correct')
+          squareEls[idx].classList.remove('incorrect')
         }
       }
     })
   }
-
+  // TOGGLE BUTTON COLOR
   hintActive = !hintActive
   togglebutton(hintActive, hintButton)
 }
@@ -576,7 +712,26 @@ const getNum = (event) => {
   //  ^start, $ends, [1-9]match
   if (text.length === 1 && /^[1-9]$/.test(text)) {
     event.target.style.color = 'black'
+    hintActive = false
+    togglebutton(hintActive, hintButton)
+
+    textElements.forEach((text, idx) => {
+      if (text.classList.contains('game-num')) {
+        text.style.color = 'black'
+        squareEls[idx].classList.remove('correct')
+        squareEls[idx].classList.remove('incorrect')
+      }
+    })
+
     boardArray[index] = parseInt(text)
+
+    // ADD AND REMOVE CLASSS TO APPLAY ANIMATION
+    event.target.classList.add('animated')
+
+    // Remove the animation after it completes
+    setTimeout(() => {
+      event.target.classList.remove('animated')
+    }, 250)
   } else {
     event.target.value = ''
   }
@@ -616,11 +771,25 @@ const showNoteBox = () => {
 
 // RESET THE GAME FOR PLAY AGAIN
 const resetGame = () => {
-  boardArray = new Array(81).fill('')
+  boardArray = Array.from({ length: 81 }, () => '')
+  // REMOVE ANIMATION CLASSES AND IMAGES
+  document.querySelector('#board').classList.remove('fade-out')
+  document.querySelector('#win-div').classList.remove('visible')
+  document.querySelector('#out').classList.remove('visible')
+  document.querySelector('#left').style.visibility = 'hidden'
+  document.querySelector('#right').style.visibility = 'hidden'
 
   // CLEAR BOARD TEXT VALUES OF THE BOXES
-  textElements.forEach((input) => {
+  textElements.forEach((input, idx) => {
     input.value = ''
+    textElements[idx].classList.remove('game-num')
+    textElements[idx].classList.remove('puzzle-num')
+  })
+
+  squareEls.forEach((ele, idx) => {
+    // ele.classList.remove('incorrect')
+    ele.classList.remove('correct')
+    ele.classList.remove('correct')
   })
 
   // CLEAR NOTES
@@ -645,19 +814,80 @@ const resetGame = () => {
   // RESET BUTTONS
   hintButton.style.display = 'inline'
   noteButton.style.display = 'inline'
+  hintButton.style.backgroundColor = '#ddd'
+  noteButton.style.backgroundColor = 'inli#dddne'
   restButton.style.display = 'none'
+}
+
+let highlightedSquare = null
+
+// HIGHLIGHT ROW AND COLUMN
+const highlight = (event) => {
+  // Remove previous highlights
+  removeHighlights()
+
+  // GIT THE CLICKED SQUARE Index
+  const hover = event.target
+  const hoverBox = hover.parentElement
+  const hoverIndex = hoverBox.id
+
+  // Calculate row and column index
+  const colIndex = hoverIndex % 9
+  const squareRow = hoverBox.closest('.subsec')
+
+  // highlight the row
+  squareRow.classList.add('highlighted')
+
+  // Highlight the entire column
+  for (let i = colIndex; i < squareEls.length; i += 9) {
+    squareEls[i].classList.add('highlighted')
+  }
+
+  // Keep track of the currently highlighted square
+  highlightedSquare = hoverBox
+}
+
+// Function to remove all highlights
+const removeHighlights = () => {
+  squareEls.forEach((square) => square.classList.remove('highlighted'))
+  highlightedSquare = null
+  secElement.forEach((sec) => sec.classList.remove('highlighted'))
 }
 
 /*----------------------------- Event Listeners -----------------------------*/
 
-textElements.forEach((input) => {
-  input.addEventListener('input', getNum)
+// Remove highlight when hover is outside the box
+document.body.addEventListener('mouseover', (event) => {
+  if (!event.target.classList.contains('text') && highlightedSquare !== null) {
+    removeHighlights()
+  }
 })
 
-startButton.addEventListener('click', render)
+// Attach click event listeners to buttons in index page
+if (window.location.pathname === '/unit1/hw/sudoku/') {
+  document
+    .getElementById('easy')
+    .addEventListener('click', () => handleDifficultyClick('easy'))
+  document
+    .getElementById('medium')
+    .addEventListener('click', () => handleDifficultyClick('medium'))
+  document
+    .getElementById('hard')
+    .addEventListener('click', () => handleDifficultyClick('hard'))
+}
+// })
 
-hintButton.addEventListener('click', hint)
+// Attach click event listeners to buttons in game page
+if (window.location.pathname.includes('game-page.html')) {
+  textElements.forEach((input) => {
+    input.addEventListener('input', getNum)
+  })
 
-noteButton.addEventListener('click', showNoteBox)
+  startButton.addEventListener('click', render)
 
-restButton.addEventListener('click', resetGame)
+  hintButton.addEventListener('click', hint)
+
+  noteButton.addEventListener('click', showNoteBox)
+
+  restButton.addEventListener('click', resetGame)
+}
