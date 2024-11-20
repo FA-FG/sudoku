@@ -356,37 +356,15 @@ function handleDifficultyClick(difficulty) {
   nextLink.href = `game-page.html?difficulty=${selectedDifficulty}`
 }
 
-// // Testing puzzle: GITTING A FILTERED ARRAY WITH ONLY SELECTED DIFFICALTY PUZZLE
-// const getFilteredPuzzles = (difficulty) => {
-//   return testPuzzle.filter((puzzle) => puzzle.difficulty === difficulty)
-// }
-
-// // TESTING ONLY
-// const selectRandomPuzzle = () => {
-//   if (selectedDifficulty) {
-//     // FILTER THE PUZZLE AACCORDING TO DIFFICULTY
-//     const filteredPuzzles = getFilteredPuzzles(selectedDifficulty)
-//     const random = Math.floor(Math.random() * filteredPuzzles.length)
-//     // SPLITING BECAUSE ITS A LONG TEXT OF NUMBERS
-//     let choice = filteredPuzzles[random].puzzle
-//     let splitChoice = choice.split('')
-//     let ans = filteredPuzzles[random].solution
-//     let ansSplit = ans.split('')
-//     let massege = filteredPuzzles[random].difficulty.toLocaleUpperCase()
-//     let randomArray = [splitChoice, ansSplit, massege]
-//     return randomArray
-//   }
-// }
-
-// Actual puzzle: GITTING A FILTERED ARRAY WITH ONLY SELECTED DIFFICALTY PUZZLE
+// Testing puzzle: GITTING A FILTERED ARRAY WITH ONLY SELECTED DIFFICALTY PUZZLE
 const getFilteredPuzzles = (difficulty) => {
-  return puzzles.filter((puzzle) => puzzle.difficulty === difficulty)
+  return testPuzzle.filter((puzzle) => puzzle.difficulty === difficulty)
 }
 
-// ACTUAL PUZZLE
-// CHOOSE A RANDOM PUZZLE FROM THE PUZZLE ARRAY - RETURN AN ARRAY OF CHOICE-
+// TESTING ONLY
 const selectRandomPuzzle = () => {
   if (selectedDifficulty) {
+    // FILTER THE PUZZLE AACCORDING TO DIFFICULTY
     const filteredPuzzles = getFilteredPuzzles(selectedDifficulty)
     const random = Math.floor(Math.random() * filteredPuzzles.length)
     // SPLITING BECAUSE ITS A LONG TEXT OF NUMBERS
@@ -399,6 +377,28 @@ const selectRandomPuzzle = () => {
     return randomArray
   }
 }
+
+// // Actual puzzle: GITTING A FILTERED ARRAY WITH ONLY SELECTED DIFFICALTY PUZZLE
+// const getFilteredPuzzles = (difficulty) => {
+//   return puzzles.filter((puzzle) => puzzle.difficulty === difficulty)
+// }
+
+// // ACTUAL PUZZLE
+// // CHOOSE A RANDOM PUZZLE FROM THE PUZZLE ARRAY - RETURN AN ARRAY OF CHOICE-
+// const selectRandomPuzzle = () => {
+//   if (selectedDifficulty) {
+//     const filteredPuzzles = getFilteredPuzzles(selectedDifficulty)
+//     const random = Math.floor(Math.random() * filteredPuzzles.length)
+//     // SPLITING BECAUSE ITS A LONG TEXT OF NUMBERS
+//     let choice = filteredPuzzles[random].puzzle
+//     let splitChoice = choice.split('')
+//     let ans = filteredPuzzles[random].solution
+//     let ansSplit = ans.split('')
+//     let massege = filteredPuzzles[random].difficulty.toLocaleUpperCase()
+//     let randomArray = [splitChoice, ansSplit, massege]
+//     return randomArray
+//   }
+// }
 
 // GET THE CHOSEN PUZZLE RETURNED FROM THE FUNCTION
 let randomArray = selectRandomPuzzle()
@@ -712,7 +712,8 @@ document.body.addEventListener('mouseover', (event) => {
 // Attach click event listeners to buttons in index page
 if (
   window.location.pathname === '/' ||
-  window.location.pathname.includes('/index.html')
+  window.location.pathname.includes('/index.html') ||
+  window.location.pathname.includes('/sudoku/')
 ) {
   document
     .getElementById('easy')
