@@ -326,14 +326,19 @@ textElements.forEach((input) => {
   input.readOnly = true
 })
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+
 // CHECK THE URL WHEN GAME PAGE IS LOADED AND SAVE IT IN A VAR
 let selectedDifficulty = ''
 
+// get the difficulty attribute
 const urlParams = new URLSearchParams(window.location.search)
 const difficultyFromUrl = urlParams.get('difficulty')
 if (difficultyFromUrl) {
   selectedDifficulty = difficultyFromUrl
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 // TO GET SELECTED DIFFICULTY BUTTONS
 function handleDifficultyClick(difficulty) {
@@ -352,10 +357,11 @@ function handleDifficultyClick(difficulty) {
   // Show the next link that leads to the game page
   nextLink.style.display = 'inline-block'
 
+  //////////////////////////////////////////////////////////////////////////////////////////////
   // Update the link's href attribute
   nextLink.href = `game-page.html?difficulty=${selectedDifficulty}`
 }
-
+//////////////////////////////////////////////////////////////////////////////////////////////
 // Testing puzzle: GITTING A FILTERED ARRAY WITH ONLY SELECTED DIFFICALTY PUZZLE
 const getFilteredPuzzles = (difficulty) => {
   return testPuzzle.filter((puzzle) => puzzle.difficulty === difficulty)
@@ -712,8 +718,7 @@ document.body.addEventListener('mouseover', (event) => {
 // Attach click event listeners to buttons in index page
 if (
   window.location.pathname === '/' ||
-  window.location.pathname.includes('/index.html') ||
-  window.location.pathname === '/unit1/hw/sudoku/'
+  window.location.pathname.includes('/index.html')
 ) {
   document
     .getElementById('easy')
