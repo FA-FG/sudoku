@@ -715,22 +715,6 @@ document.body.addEventListener('mouseover', (event) => {
   }
 })
 
-// Attach click event listeners to buttons in index page
-if (
-  window.location.pathname === '/' ||
-  window.location.pathname.includes('/index.html')
-) {
-  document
-    .getElementById('easy')
-    .addEventListener('click', () => handleDifficultyClick('easy'))
-  document
-    .getElementById('medium')
-    .addEventListener('click', () => handleDifficultyClick('medium'))
-  document
-    .getElementById('hard')
-    .addEventListener('click', () => handleDifficultyClick('hard'))
-}
-
 // Attach click event listeners to buttons in game page
 if (window.location.pathname.includes('game-page.html')) {
   textElements.forEach((input) => {
@@ -744,4 +728,14 @@ if (window.location.pathname.includes('game-page.html')) {
   noteButton.addEventListener('click', showNoteBox)
 
   restButton.addEventListener('click', resetGame)
+} else {
+  document
+    .getElementById('easy')
+    .addEventListener('click', () => handleDifficultyClick('easy'))
+  document
+    .getElementById('medium')
+    .addEventListener('click', () => handleDifficultyClick('medium'))
+  document
+    .getElementById('hard')
+    .addEventListener('click', () => handleDifficultyClick('hard'))
 }
