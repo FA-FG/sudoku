@@ -1,6 +1,6 @@
 # Sudoku puzzle game
 
-![Image of the game](./sudoku/game-img.png)
+![Image of the game](game-img.png)
 
 ## Description:
 
