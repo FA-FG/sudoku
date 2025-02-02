@@ -17,7 +17,9 @@ I chose to create this game because Sudoku is both challenging and fun, offering
 
 ## Getting started:
 
-_[Click here to try the game](http://sticky-plough.surge.sh/)_
+_[Click here to try the game](https://voracious-icicle.surge.sh/)_
+
+
 
 ## Attributions:
 
